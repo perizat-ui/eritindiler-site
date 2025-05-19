@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Тіркелу</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <h2>Тіркелу</h2>
+  <form id="register-form">
+    <input type="text" id="name" placeholder="Толық аты-жөніңіз" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Құпия сөз (кем дегенде 6 таңба)" required />
+    <button type="submit">Тіркелу</button>
+    <p id="error-message" style="color:red;"></p>
+  </form>
+
+  <script>
+    // Firebase Authentication-ды импорттау
+    const auth = firebase.auth();
+
+    const registerForm = document.getElementById('register-form');
+    const errorMessage = document.getElementById('error-message');
+
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (password.length < 6) {
+        errorMessage.textContent = 'Құпия сөз кем дегенде 6 таңба болуы керек';
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+
+          return user.updateProfile({ displayName: name });
+        })
+        .then(() => {
+          alert('Тіркелу сәтті аяқталды! Кіру бетіне өтіңіз.');
+          window.location.href = 'login.html';
+        })
+        .catch((error) => {
+          errorMessage.textContent = error.message;
+        });
+    });
+  </script>
+</body>
+</html>
