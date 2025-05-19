@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ерітінділер бойынша өзін-өзі тексеру</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      color: #333;
+    }
+    .question {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .question.correct {
+      border-left: 5px solid green;
+    }
+    .question.incorrect {
+      border-left: 5px solid red;
+    }
+    .question p {
+      margin: 0 0 10px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Өзіңді тексер: Ерітінділер</h2>
+
+  <form id="quiz-form">
+    <div class="question" data-correct="c">
+      <p>1. Ерітінді дегеніміз не?</p>
+      <label><input type="radio" name="q1" value="a"> А. Тек қана су</label><br>
+      <label><input type="radio" name="q1" value="b"> B. Заттың балқуы</label><br>
+      <label><input type="radio" name="q1" value="c"> C. Еріген зат пен еріткіштің біртекті қоспасы</label>
+    </div>
+
+    <div class="question" data-correct="a">
+      <p>2. 100 г суда 20 г тұз ерісе, ерітіндінің массалық үлесі (%) қанша болады?</p>
+      <label><input type="radio" name="q2" value="a"> А. 16.7%</label><br>
+      <label><input type="radio" name="q2" value="b"> B. 20%</label><br>
+      <label><input type="radio" name="q2" value="c"> C. 25%</label>
+    </div>
+
+    <div class="question" data-correct="b">
+      <p>3. Қаныққан ерітінді дегеніміз не?</p>
+      <label><input type="radio" name="q3" value="a"> А. Еріген зат өте көп</label><br>
+      <label><input type="radio" name="q3" value="b"> B. Белгілі температурада артық зат енді ерімейтін ерітінді</label><br>
+      <label><input type="radio" name="q3" value="c"> C. Тек сұйық күйдегі заттар еріген қоспа</label>
+    </div>
+
+    <button type="button" onclick="checkAnswers()">Нәтижені көру</button>
+  </form>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function checkAnswers() {
+      const questions = document.querySelectorAll('.question');
+      let correctCount = 0;
+
+      questions.forEach((question, index) => {
+        const correct = question.getAttribute('data-correct');
+        const selected = question.querySelector('input[type="radio"]:checked');
+
+        question.classList.remove('correct', 'incorrect');
+
+        if (selected) {
+          if (selected.value === correct) {
+            question.classList.add('correct');
+            correctCount++;
+          } else {
+            question.classList.add('incorrect');
+          }
+        }
+      });
+
+      document.getElementById('result').textContent =
+        Дұрыс жауаптар саны: ${correctCount} / ${questions.length};
+    }
+  </script>
+</body>
+</html>
